@@ -1,0 +1,41 @@
+{
+    "general"                 : {
+                                 "device"                : "cuda",
+                                 "seed"                  : 108,
+                                 "mode"                  : "test",
+                                 "output directory"      : "./output"
+                                },
+
+    "model"                   : {
+                                 "name"                  : "ResNet18",
+                                 "normalize"             : 1,
+                                 "resize"                : [224, 224],
+                                 "mean"                  : [0.485, 0.456, 0.406],
+                                 "std"                   : [0.229, 0.224, 0.225],
+                                 "num classes"           : 7
+                                },
+
+    "hyperparameters"         : {
+                                 "epochs"                : 100,
+                                 "learning rate"         : 1e-4,
+                                 "batch size"            : 128,
+                                 "num workers"           : 8
+                                },
+
+    "dataset"                 : {
+                                 "dataset directory"     : "./dataset",
+                                 "images foldername"     : "HAM10000_images",
+                                 "csv filename"          : "HAM10000_metadata.csv",
+                                 "split ratios"          : [0.8, 0.1, 0.1]
+                                 },
+
+    "lesion types"            : {
+                                 "nv": 0,
+                                 "mel": 1,
+                                 "bkl": 2,
+                                 "bcc": 3,
+                                 "akiec": 4,
+                                 "vasc": 5,
+                                 "df": 6
+                                }
+}
