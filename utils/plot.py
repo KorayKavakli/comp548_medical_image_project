@@ -44,21 +44,21 @@ def plot_loss_curves(training_loss, validation_loss, directory, model):
         plt.close()
 
 
-def plot_confusion_matrix(predictions, labels, directory, model, lesion_types):
+def plot_confusion_matrix(predictions, labels, directory, model, lesion_types, normalize=True):
     if isinstance(predictions, torch.Tensor):
-        predictions = predictions.cpu()
+        predictions = predictions.cpu().numpy()
     if isinstance(labels, torch.Tensor):
-        labels = labels.cpu()
-    if isinstance(predictions, torch.Tensor):
-        predictions = predictions.numpy()
-    if isinstance(labels, torch.Tensor):
-        labels = labels.numpy()
+        labels = labels.cpu().numpy()
     matrix = confusion_matrix(labels, predictions)
     class_labels = lesion_types
+    if normalize:
+        matrix = matrix.astype('float') / matrix.sum(axis=1)[:, np.newaxis]
     with plt.style.context(['science', 'ieee']):
         fig, ax = plt.subplots(figsize=(5, 4))
+        cmap = plt.cm.Blues if not normalize else plt.cm.viridis
         disp = ConfusionMatrixDisplay(confusion_matrix=matrix, display_labels=class_labels)
-        disp.plot(ax=ax, cmap=plt.cm.Blues) 
+        disp.plot(ax=ax, cmap=cmap)
+        
         ax.set_xlabel('Predicted Label')
         ax.set_ylabel('True Label')
         plt.xticks(rotation=45)
@@ -68,6 +68,7 @@ def plot_confusion_matrix(predictions, labels, directory, model, lesion_types):
         ax.tick_params(axis='y',which='major', direction="out", left=True, right=False)
         plt.grid(False)
         plt.title("Confusion Matrix - {}".format(model))
+        
         plt.tight_layout()
         plt.savefig("{}/{}/{}".format(directory, model, "confusion_matrix_test_dataset.png"),
                     dpi=300, 
