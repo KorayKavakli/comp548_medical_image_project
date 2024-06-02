@@ -17,7 +17,7 @@
 
     "hyperparameters"         : {
                                  "epochs"                : 100,
-                                 "learning rate"         : 1e-4,
+                                 "learning rate"         : 3e-4,
                                  "batch size"            : 128,
                                  "num workers"           : 8
                                 },
@@ -26,7 +26,7 @@
                                  "dataset directory"     : "./dataset",
                                  "images foldername"     : "HAM10000_images",
                                  "csv filename"          : "HAM10000_metadata.csv",
-                                 "split ratios"          : [0.8, 0.1, 0.1]
+                                 "split ratios"          : [0.7, 0.15, 0.15]
                                  },
 
     "lesion types"            : {

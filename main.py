@@ -23,16 +23,16 @@ def prepare():
 def main(): 
     settings, device, lesion_type_dict, mode = prepare() 
 
-    train_loader, val_loader, test_loader = prepare_dataloaders(
+    train_loader, val_loader, test_loader, class_weights = prepare_dataloaders(
         settings=settings,
         split_ratios=settings["dataset"]["split ratios"],
         lesion_type_dict=lesion_type_dict
     )
 
     if mode == "train":
-        run(settings, device, train_loader, val_loader, test_loader, mode="train")
+        run(settings, device, train_loader, val_loader, test_loader, class_weights, mode="train")
     elif mode == "test":
-        run(settings, device, train_loader, val_loader, test_loader, mode="test")
+        run(settings, device, train_loader, val_loader, test_loader, class_weights, mode="test")
     else:
         raise ValueError("Mode is not valid. Please choose from 'train', 'test'.")
 

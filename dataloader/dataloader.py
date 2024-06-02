@@ -92,4 +92,15 @@ def prepare_dataloaders(settings, split_ratios, lesion_type_dict):
         shuffle=False,
         num_workers=settings["hyperparameters"]["num workers"]
     )
-    return train_loader, val_loader, test_loader
+    class_weights = calculate_weights(train_dataset)
+    return train_loader, val_loader, test_loader, class_weights
+
+
+def calculate_weights(dataset):
+    num_classes = 7
+    class_counts = torch.zeros(num_classes)
+    for _, label in dataset:
+        class_counts[label] += 1
+    total_samples = sum(class_counts)
+    class_weights = total_samples / (num_classes * class_counts)
+    return class_weights

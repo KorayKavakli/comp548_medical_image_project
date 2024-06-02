@@ -3,7 +3,7 @@ import tqdm
 import copy
 
 
-def train_model(model, criterion, optimizer, num_epochs, train_loader, val_loader, device):
+def train_model(model, criterion, optimizer, num_epochs, train_loader, val_loader, class_weights, device):
     """
     Function to train the model.
     
@@ -50,6 +50,12 @@ def train_model(model, criterion, optimizer, num_epochs, train_loader, val_loade
                 outputs = model(inputs)
                 _, preds = torch.max(outputs, 1)
                 loss = criterion(outputs, labels)
+                #print(loss)
+                loss = loss * class_weights[labels]
+                #print(class_weights[labels])
+                #print(class_weights[labels].shape)
+                #print(loss)
+                loss = loss.mean()
                 loss.backward()
                 optimizer.step()
             epoch_loss += loss.item()

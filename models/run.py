@@ -6,15 +6,17 @@ from utils.io_handler import save_model, load_model, write_accuracies
 from utils.plot import plot_loss_curves, plot_confusion_matrix
 
 
-def run(settings, device, train_loader, val_loader, test_loader, mode="train"):
+def run(settings, device, train_loader, val_loader, test_loader, class_weights, mode="train"):
     model = Model(
         model_name=settings["model"]["name"],
         num_classes=settings["model"]["num classes"]
     ).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=settings["hyperparameters"]["learning rate"])
-    criterion = torch.nn.CrossEntropyLoss()
+    #criterion = torch.nn.CrossEntropyLoss()
     if mode == "train":
         print("Training the model...")
+        class_weights = class_weights.to(device)
+        criterion = torch.nn.CrossEntropyLoss(weight=class_weights)
         model, train_loss, val_loss = train_model(
             model=model,
             criterion=criterion,
@@ -22,6 +24,7 @@ def run(settings, device, train_loader, val_loader, test_loader, mode="train"):
             num_epochs=settings["hyperparameters"]["epochs"],
             train_loader=train_loader,
             val_loader=val_loader,
+            class_weights=class_weights,
             device=device
         )
         save_model(model, "{}/{}".format(
@@ -51,6 +54,7 @@ def run(settings, device, train_loader, val_loader, test_loader, mode="train"):
             val_loader: "validation",
             test_loader: "test"
         }
+        criterion = torch.nn.CrossEntropyLoss()
         for loader in loader_mapping:
             if loader == test_loader:
                 accuracy, predictions, labels = test_model(
@@ -81,5 +85,3 @@ def run(settings, device, train_loader, val_loader, test_loader, mode="train"):
                               settings["general"]["output directory"],
                               settings["model"]["name"],
                               settings["lesion types"])
-        
-    
