@@ -11,6 +11,11 @@ In our work, we evaluated the performance of different neural network architectu
 We took advantage of pretrained model architectures and modified their classification layer with respect to our dataset.
 
 ### Requirements
+We provide all dependecies in `requirements.txt`. 
+To install the required packages use the following:
+```shell
+pip3 install -r requirements.txt
+```
 
 ## Dataset
 In our work we relied on [HAM10000 Dataset](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000/), which can be downloaded from the website. 
