@@ -2,7 +2,6 @@ import torch
 import torchvision
 
 
-
 class Model(torch.nn.Module):
     def __init__(self, model_name, num_classes):
         super(Model, self).__init__()
