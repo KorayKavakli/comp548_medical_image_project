@@ -119,3 +119,4 @@ dmypy.json
 
 #dataset directory
 dataset/
+.DS_Store
